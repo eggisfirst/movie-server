@@ -1,8 +1,9 @@
-import { plainToClass, Type } from "class-transformer";
+import { Type } from "class-transformer";
 import { ArrayMinSize, IsInt, IsNotEmpty, Max, Min, IsArray, validate } from "class-validator";
 import "reflect-metadata";
+import { BaseEntity } from "./BaseEntity";
 
-export class Movie {
+export class Movie extends BaseEntity {
   @IsNotEmpty({ message: "电影名称不能为空" })
   @Type(() => String) // 平面对象类型丢失  使用Type装饰器
   public name: string;
@@ -43,26 +44,13 @@ export class Movie {
 
   @Type(() => String)
   public poster?: string;
-  /**
-   * 验证当前对象
-   * @returns 返回错误数组。
-   */
-  public async validateThis(skipMiss = false): Promise<string[]> {
-    const errors = await validate(this, {
-      skipMissingProperties: skipMiss,
-    });
-    return errors.map(e => Object.values(e.constraints)).flat();
-  }
 
   /**
-   * 把一个平面对象转换成movie对象
+   * 把一个平面对象转换成movie对象，调用父类的方法简化
    * @param plainObject 平面对象
    * @returns movie对象
    */
   public static transformer(plainObject: object): Movie {
-    if (plainObject instanceof Movie) {
-      return plainObject;
-    }
-    return plainToClass(Movie, plainObject);
+    return super.baseTransformer(Movie, plainObject);
   }
 }
