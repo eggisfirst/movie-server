@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2016",   // 编译目标，服务器node环境识别js版本比较高
+    "module": "commonjs", // 编译结果的模块化标准
+    "outDir": "./dist", // 编译结果输出目录
+    "experimentalDecorators": true, //开启装饰器
+    "emitDecoratorMetadata": true, //
+    "strictNullChecks": true, //null undefined只能赋值自己
+    "removeComments": true, //编译结果移除注释
+    "noEmitOnError": true, //发生错误的时候不要生成结果
+    "lib": ["esnext"],
+  },
+  "include": ["./src"] // 源代码目录
+}
